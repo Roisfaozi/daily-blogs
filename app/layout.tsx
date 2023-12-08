@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar/Navbar";
+import SessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -30,6 +31,7 @@ export default function RootLayout({
             {children}
           </main>
         </ThemeProvider>
+        <SessionProvider />
       </body>
     </html>
   );
