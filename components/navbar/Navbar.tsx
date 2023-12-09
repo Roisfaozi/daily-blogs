@@ -5,6 +5,7 @@ import LoginForm from "./LoginForm";
 import Profile from "./Profile";
 export default function Navbar() {
   const user = useUserStore((state) => state.user);
+
   return (
     <nav className="flex items-center justify-between">
       <div className="groups">
