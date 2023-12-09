@@ -1,15 +1,24 @@
+"use client";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useUserStore } from "@/lib/store/user";
+import { supabase } from "@/lib/supabase/client";
 import { DashboardIcon, LockOpen1Icon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+
 export default function Profile() {
   const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
+  const handleLoout = async () => {
+    await supabase.auth.signOut();
+    setUser(undefined);
+  };
   return (
     <Popover>
       <PopoverTrigger>
@@ -38,6 +47,7 @@ export default function Profile() {
         <Button
           variant="ghost"
           className="w-full flex items-center justify-between"
+          onClick={handleLoout}
         >
           Logout
           <LockOpen1Icon />
