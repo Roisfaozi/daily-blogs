@@ -2,6 +2,7 @@
 import { useUserStore } from "@/lib/store/user";
 import Link from "next/link";
 import LoginForm from "./LoginForm";
+import Profile from "./Profile";
 export default function Navbar() {
   const user = useUserStore((state) => state.user);
   return (
@@ -12,7 +13,7 @@ export default function Navbar() {
         </Link>
         <div className="h-1 w-0 group-hover:w-full transition-all bg-green-500"></div>
       </div>
-      {user ? <h1>Profile</h1> : <LoginForm />}
+      {user ? <Profile /> : <LoginForm />}
     </nav>
   );
 }
