@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar/Navbar";
 import SessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({
             <Navbar />
             {children}
           </main>
+          <Toaster />
         </ThemeProvider>
         <SessionProvider />
       </body>
