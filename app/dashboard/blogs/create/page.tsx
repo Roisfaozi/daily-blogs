@@ -23,23 +23,45 @@ import {
   StarIcon,
 } from "@radix-ui/react-icons";
 
+import MarkdownPreview from "@/components/navbar/markdown/MarkdownPreview";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 import { BsSave } from "react-icons/bs";
 
-const FormSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  image_url: z.string().url({ message: "Invalid url" }),
-  content: z.string().min(2, {
-    message: "Content must be at least 2 characters.",
-  }),
-  is_published: z.boolean(),
-  is_premium: z.boolean(),
-});
+const FormSchema = z
+  .object({
+    title: z.string().min(2, {
+      message: "Title must be at least 2 characters.",
+    }),
+    image_url: z.string().url({ message: "Invalid url" }),
+    content: z.string().min(2, {
+      message: "Content must be at least 2 characters.",
+    }),
+    is_published: z.boolean(),
+    is_premium: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      const image_url = data.image_url;
+      try {
+        const url = new URL(image_url);
+        const regex = /^(?:(\*\.)?[a-zA-Z0-9-]+\.)*unsplash\.com$/;
+        if (regex.test(url.hostname)) {
+          return url.hostname;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
+    },
+    {
+      message: "Currently we are support only the image from unsplash",
+      path: ["image_url"],
+    },
+  );
 
 export default function BlogFrom() {
   const [isPreview, setIsPreview] = useState(false);
@@ -70,15 +92,19 @@ export default function BlogFrom() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-ful border rounded-b space-y-6"
+        className="w-ful border rounded-b space-y-6 pb-10"
       >
-        <div className="p-5 flex items-center flex-wrap justify-between border-b gap-5">
-          <div className="flex gap-5 items-center">
+        <div className="p-5 flex items-center flex-wrap justify-between border-b gap-5 ">
+          <div className="flex gap-5 items-center flex-wrap">
             <span
               role="button"
               tabIndex={0}
               className="p-2 rounded-md  flex items-center gap-1 border bg-zinc-700 hover:ring-2 hover:bg-zinc-400"
-              onClick={() => setIsPreview(!isPreview)}
+              onClick={() =>
+                setIsPreview(
+                  !isPreview && !form.getFieldState("image_url").invalid,
+                )
+              }
             >
               {isPreview ? (
                 <>
@@ -259,15 +285,13 @@ export default function BlogFrom() {
                   />
                   <div
                     className={cn(
-                      "lg:px-10",
+                      "overflow-y-auto",
                       isPreview
                         ? "mx-auto w-full lg:w-4/5"
                         : "w-1/2 lg:block hidden",
                     )}
                   >
-                    <h1 className="text-3xl font-medium">
-                      {form.getValues().content}
-                    </h1>
+                    <MarkdownPreview content={form.getValues().content} />
                   </div>
                 </div>
               </FormControl>
