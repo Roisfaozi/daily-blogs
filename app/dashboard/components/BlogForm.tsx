@@ -25,7 +25,7 @@ import MarkdownPreview from "@/components/navbar/markdown/MarkdownPreview";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { BsSave } from "react-icons/bs";
 import { BlogFormSchema, BlogFormSchemaType } from "../schema";
 
@@ -34,6 +34,7 @@ export default function BlogFrom({
 }: {
   onHandlesubmit: (data: BlogFormSchemaType) => void;
 }) {
+  const [isPending, startTransition] = useTransition();
   const [isPreview, setIsPreview] = useState(false);
 
   const form = useForm<BlogFormSchemaType>({
@@ -49,7 +50,9 @@ export default function BlogFrom({
   });
 
   function onSubmit(data: BlogFormSchemaType) {
-    onHandlesubmit(data);
+    startTransition(() => {
+      onHandlesubmit(data);
+    });
   }
   return (
     <Form {...form}>
@@ -124,7 +127,9 @@ export default function BlogFrom({
             />
           </div>
           <Button
-            className="flex items-center gap-1"
+            className={cn("flex items-center gap-1", {
+              "animate-spin": isPending,
+            })}
             disabled={!form.formState.isValid}
           >
             <BsSave /> Save
