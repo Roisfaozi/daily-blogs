@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { readBlog } from "@/lib/actions/blogs";
+import { readBlog, updateBlogById } from "@/lib/actions/blogs";
 import { EyeOpenIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { BlogFormSchemaType } from "../schema";
 import DeleteAlert from "./DeleteAlert";
+import SwitchForm from "./SwitchForm";
 
 export default async function BlogTable() {
   const { data: blogs } = await readBlog();
@@ -15,11 +16,26 @@ export default async function BlogTable() {
           <h2>Publish</h2>
         </div>
         {blogs?.map((blog, index) => {
+          const updatePremium = updateBlogById.bind(null, blog.id, {
+            is_premium: !blog.is_premium,
+          } as BlogFormSchemaType);
+
+          const updatePublished = updateBlogById.bind(null, blog.id, {
+            is_published: !blog.is_published,
+          } as BlogFormSchemaType);
           return (
             <div className="grid grid-cols-5 p-5" key={index}>
               <h1 className="cols-span-2">{blog.title}</h1>
-              <Switch checked={blog.is_premium} />
-              <Switch checked={blog.is_published} />
+              <SwitchForm
+                checked={blog.is_premium}
+                name="premium"
+                onSubmit={updatePremium}
+              />
+              <SwitchForm
+                checked={blog.is_published}
+                name="published"
+                onSubmit={updatePublished}
+              />
               <Actions id={blog.id} />
             </div>
           );

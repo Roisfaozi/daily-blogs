@@ -14,8 +14,8 @@ export interface Database {
           created_at: string;
           id: string;
           image_url: string | null;
-          is_premium: boolean | null;
-          is_published: boolean | null;
+          is_premium: boolean;
+          is_published: boolean;
           title: string | null;
         };
         Insert: {
