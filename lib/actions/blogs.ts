@@ -54,7 +54,27 @@ export async function readBlogContentById(blogId: string) {
 
   return supabase
     .from("blog")
-    .select("*.blog_content(*)")
+    .select("*,blog_content(*)")
     .eq("id", blogId)
     .single();
+}
+
+export async function updateBlogDetailById(
+  blogId: string,
+  data: BlogFormSchemaType,
+) {
+  const { ["content"]: excludedKey, ...blog } = data;
+
+  const supabase = await supabaseServer();
+  const result = await supabase.from("blog").update(blog).eq("id", blogId);
+  if (result.error) {
+    return JSON.stringify(result);
+  } else {
+    const result = await supabase
+      .from("blog_content")
+      .update({ content: data.content })
+      .eq("id", blogId);
+    revalidatePath(DASHBOARD);
+    return JSON.stringify(result);
+  }
 }

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { readBlog, updateBlogById } from "@/lib/actions/blogs";
 import { EyeOpenIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { BlogFormSchemaType } from "../schema";
 import DeleteAlert from "./DeleteAlert";
 import SwitchForm from "./SwitchForm";
@@ -53,10 +54,12 @@ const Actions = ({ id }: { id: string }) => {
         View
       </Button>
       <DeleteAlert blogId={id} />
-      <Button variant="outline" className="flex items-center gap-2">
-        <Pencil1Icon />
-        Edit
-      </Button>
+      <Link href={"/dashboard/blogs/edit/" + id}>
+        <Button variant="outline" className="flex items-center gap-2">
+          <Pencil1Icon />
+          Edit
+        </Button>
+      </Link>
     </div>
   );
 };
