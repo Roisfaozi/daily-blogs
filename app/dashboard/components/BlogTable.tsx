@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { readBlog, updateBlogById } from "@/lib/actions/blogs";
+import { readBlogAdmin, updateBlogById } from "@/lib/actions/blogs";
 import { EyeOpenIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { BlogFormSchemaType } from "../schema";
@@ -7,10 +7,10 @@ import DeleteAlert from "./DeleteAlert";
 import SwitchForm from "./SwitchForm";
 
 export default async function BlogTable() {
-  const { data: blogs } = await readBlog();
+  const { data: blogs } = await readBlogAdmin();
   return (
     <div className="overflow-x-auto">
-      <div className="border bg-graident-dark rounded-md w-[900px] md:w-full">
+      <div className="border bg-graident-dark rounded-md sm:w-[900px] md:w-full">
         <div className="grid grid-cols-5 p-5 text-gray-500 border-b">
           <h1 className="cols-span-2">Title</h1>
           <h1>Premium</h1>
@@ -48,7 +48,7 @@ export default async function BlogTable() {
 
 const Actions = ({ id }: { id: string }) => {
   return (
-    <div className="flex items-center gap-5 flex-wrap">
+    <div className="flex items-center gap-5 flex-wrap md:flex-row">
       <Button variant="outline" className="flex items-center gap-2">
         <EyeOpenIcon />
         View
