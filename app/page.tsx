@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default async function Home() {
   const { data: blogs } = await readBlog();
-  console.log(blogs);
   return (
     <div
       className="w-full grid grid-cols-1 md:grid-cols-3
@@ -19,6 +18,7 @@ export default async function Home() {
         >
           <div className="relative w-full h-72 md:h-64 xl:h-96">
             <Image
+              priority
               src={blog?.image_url}
               fill
               className="object-cover object-center"

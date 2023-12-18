@@ -40,17 +40,17 @@ export interface Database {
         Row: {
           content: string | null;
           created_at: string;
-          id: string;
+          blog_id: string;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
-          id: string;
+          blog_id: string;
         };
         Update: {
           content?: string | null;
           created_at?: string;
-          id?: string;
+          blog_id?: string;
         };
         Relationships: [
           {
