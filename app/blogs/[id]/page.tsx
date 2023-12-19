@@ -1,3 +1,4 @@
+import Checkout from "@/components/stripe/Checkout";
 import { IBlog } from "@/lib/types";
 import Image from "next/image";
 import BlogContent from "./components/BlogContent";
@@ -29,6 +30,8 @@ export default async function page({ params }: { params: { id: string } }) {
         />
       </div>
       <BlogContent blogId={blog?.id} />
+
+      <Checkout />
     </div>
   );
 }
