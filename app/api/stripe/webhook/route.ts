@@ -16,7 +16,7 @@ export async function POST(request: any) {
 
     event = stripe.webhooks.constructEvent(rawBody, sig!, endpointSecret);
   } catch (err) {
-    return Response.json({ error: "Webhook error" + err?.message });
+    return Response.json({ error: "Webhook error" + err });
   }
 
   // Handle the event
@@ -73,9 +73,11 @@ const onCancelSubscription = async (
     .select("id")
     .single();
 
-  await supabase.auth.admin.updateUserById(data.id!, {
-    user_metadata: { stripe_customer_id: null },
-  });
+  if (data?.id) {
+    await supabase.auth.admin.updateUserById(data.id, {
+      user_metadata: { stripe_customer_id: null },
+    });
+  }
 };
 
 const onSuccessSubscription = async (
