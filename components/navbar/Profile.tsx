@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase/client";
 import { DashboardIcon, LockOpen1Icon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
+import ManageBiling from "../stripe/ManageBiling";
 import { Button } from "../ui/button";
 
 export default function Profile() {
@@ -17,17 +18,18 @@ export default function Profile() {
 
   const handleLoout = async () => {
     await supabase.auth.signOut();
-    setUser(undefined);
+    setUser(null);
   };
 
-  const isAdmin = user?.user_metadata.role === "admin";
+  const isAdmin = user?.role === "admin";
+  const isSub = user?.subscription_status;
 
   return (
     <Popover>
       <PopoverTrigger>
         <Image
-          src={user?.user_metadata.avatar_url}
-          alt={user?.user_metadata.user_name}
+          src={user?.image_url || ""}
+          alt={user?.display_name || ""}
           width={50}
           height={50}
           className="rounded-full ring-2 ring-green-500"
@@ -35,8 +37,8 @@ export default function Profile() {
       </PopoverTrigger>
       <PopoverContent className="p-2 space-y-3 divide-y">
         <div className="px-4 txet-sm">
-          <p>{user?.user_metadata.user_name}</p>
-          <p>{user?.user_metadata.email}</p>
+          <p>{user?.display_name}</p>
+          <p>{user?.email}</p>
         </div>
         {isAdmin && (
           <Link href="/dashboard" className="block">
@@ -48,6 +50,9 @@ export default function Profile() {
               <DashboardIcon />
             </Button>
           </Link>
+        )}
+        {!isAdmin && isSub && (
+          <ManageBiling customerId={user.stripe_customer_id!} />
         )}
         <Button
           variant="ghost"
