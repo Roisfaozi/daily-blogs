@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-case-declarations */
 import { createSupabaseAdmin } from "@/lib/supabase/server";
 import { headers } from "next/headers";
@@ -6,7 +7,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET!;
-export async function POST(request: unknown) {
+export async function POST(request: any) {
   const rawBody = await buffer(request.body);
   let event;
 
