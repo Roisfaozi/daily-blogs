@@ -19,11 +19,11 @@ export default async function Home() {
           <div className="relative w-full h-72 md:h-64 xl:h-96">
             <Image
               priority
-              src={blog?.image_url}
+              src={blog.image_url!}
               fill
               className="object-cover object-center"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              alt={blog.title}
+              alt={blog.title!}
             />
           </div>
           <div className="space-y-2">
@@ -33,7 +33,6 @@ export default async function Home() {
             <h1 className="text-xl font-bold">{blog.title}</h1>
           </div>
           <h1>{blog.title}</h1>
-          <p>{blog.blog_content}</p>
         </Link>
       ))}
       <Button>lele</Button>

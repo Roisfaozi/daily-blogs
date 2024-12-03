@@ -47,6 +47,7 @@ export default function MarkdownPreview({
                 <div className="px-5 py-2 border-b flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Icon />
+                    {/* @ts-expect-error: Note sure */}
                     <span>{node?.data?.meta}</span>
                   </div>
                   <CopyButton id={id} />

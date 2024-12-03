@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 "use client";
 import { checkout } from "@/lib/actions/stripe";
 import { useUserStore } from "@/lib/store/user";
@@ -17,7 +18,7 @@ export default function Checkout() {
     e.preventDefault();
     startTransition(async () => {
       const data = JSON.parse(
-        await checkout(user?.email, location.origin + pathname),
+        await checkout(user?.email!, location.origin + pathname),
       );
       const result = await loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHED_KEY!,
